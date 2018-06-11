@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     checksumers["sha512"] = new sha512();
 
     string const filename = envvars::var("srcdir") + "/tests/data/data.dat";
-    ifstream infile(filename);
+    ifstream infile(filename.c_str());
     if (!infile) {
         cerr << filename << " can't be open for read!" << endl;
         return EXIT_FAILURE;
