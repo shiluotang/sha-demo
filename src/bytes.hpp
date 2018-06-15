@@ -40,7 +40,7 @@ namespace org {
                 template <typename CharT>
                 std::basic_ostream<CharT>& print(std::basic_ostream<CharT> &os) const {
                     basic_ios_guard<CharT> guard(os);
-                    os << std::hex << std::uppercase;
+                    os << std::hex << std::uppercase << std::right;
                     for (std::vector<byte>::const_iterator it = _M_data.begin();
                             it != _M_data.end();
                             ++it)
