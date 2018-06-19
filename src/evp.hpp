@@ -43,6 +43,8 @@ namespace org {
             unsigned char _M_md[EVP_MAX_MD_SIZE];
 
             context _M_ctx;
+
+            ::EVP_MD const *_M_md_type;
         };
     }
 }

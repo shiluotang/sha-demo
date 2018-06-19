@@ -4,6 +4,7 @@
 #include <string>
 #include <iterator>
 #include <stdexcept>
+#include <utility>
 
 #include <openssl/engine.h>
 #include <openssl/evp.h>

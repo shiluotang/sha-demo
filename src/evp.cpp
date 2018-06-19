@@ -5,19 +5,20 @@
 namespace org {
     namespace sqg {
 
-        evp::evp(::EVP_MD const *hasher, ::ENGINE *engine) {
+        evp::evp(::EVP_MD const *hasher, ::ENGINE *engine) :_M_md_type(hasher) {
             reset(hasher, engine);
         }
 
         evp::~evp() {}
 
         evp& evp::reset(::EVP_MD const *hasher, ENGINE *engine) {
-            if (!EVP_DigestInit_ex(&_M_ctx._M_ctx, hasher, engine))
+            _M_md_type = hasher;
+            if (!EVP_DigestInit_ex(&_M_ctx._M_ctx, _M_md_type, engine))
                 throw std::runtime_error("EVP_DigestInit_ex failed!");
             return *this;
         }
 
-        evp& evp::reset() { return reset(NULL, NULL); }
+        evp& evp::reset() { return reset(_M_md_type); }
 
         evp& evp::update(void const *data, size_t size) {
             if (!EVP_DigestUpdate(&_M_ctx._M_ctx, data, size))

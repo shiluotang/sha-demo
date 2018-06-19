@@ -22,6 +22,5 @@ test1_LDADD = libsha-demo.la
 
 test2_SOURCES = ./tests/test2.cpp
 test2_LDADD = libsha-demo.la
-test2_LDFLAGS = -all-static
 
 TESTS = $(check_PROGRAMS)
