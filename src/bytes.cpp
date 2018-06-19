@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <sstream>
 #include <cstring>
+#include <bitset>
+#include <sstream>
 
 #include "bytes.hpp"
 
@@ -71,6 +73,17 @@ namespace org {
         }
 
         bytes bytes::from_binary(std::string const &binary) {
+            if (binary.length() % 8 != 0)
+                throw std::runtime_error("invalid binary string length!");
+            int size = binary.length() / 8;
+            std::bitset<8> bits;
+            std::vector<unsigned char> buffer(size);
+            std::istringstream ss(binary);
+            for (int i = 0, n = binary.length(); ss && i < n; i += 8) {
+                ss >> bits;
+                buffer[i / 8] = bits.to_ulong() & 0xff;
+            }
+            return bytes(&buffer[0], size);
         }
     }
 }

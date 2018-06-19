@@ -14,6 +14,7 @@
 #include "../src/bytes.hpp"
 #include "../src/checksum.hpp"
 #include "../src/sha.hpp"
+#include "../src/hmac.hpp"
 
 class engine_iterator;
 class engine {
@@ -101,73 +102,28 @@ class engine_provider {
         }
 };
 
-class hmac {
-    private:
-        struct context {
-            HMAC_CTX _M_ctx;
-
-            context() { init(); }
-
-            virtual ~context() { cleanup(); }
-
-            void init() {
-                HMAC_CTX_init(&_M_ctx);
-            }
-
-            void cleanup() {
-                HMAC_CTX_cleanup(&_M_ctx);
-            }
-        };
-
-    public:
-        hmac(EVP_MD const* hasher, org::sqg::bytes const &key, ENGINE *engine = NULL)
-        {
-            reset(hasher, key, engine);
-        }
-
-        virtual ~hmac() {
-        }
-
-        void reset(EVP_MD const *hasher, org::sqg::bytes const &key, ENGINE *engine = NULL) {
-            HMAC_Init_ex(&_M_ctx._M_ctx,
-                    key.address(), key.size(),
-                    hasher,
-                    engine);
-        }
-
-        void reset() {
-            HMAC_Init_ex(&_M_ctx._M_ctx, NULL, 0, NULL, NULL);
-        }
-
-        hmac& update(org::sqg::bytes const &data) {
-            if (!HMAC_Update(&_M_ctx._M_ctx,
-                    reinterpret_cast<unsigned char const*>(data.address()),
-                    data.size()))
-                throw std::runtime_error("hmac update failed!");
-            return *this;
-        }
-
-        hmac& finish(org::sqg::bytes &value) {
-            unsigned int len = 0;
-            if (!HMAC_Final(&_M_ctx._M_ctx,
-                    &_M_md[0],
-                    &len))
-                throw std::runtime_error("hmac final failed!");
-            value.assign(&_M_md[0], len);
-            return *this;
-        }
-
-    private:
-        context _M_ctx;
-        unsigned char _M_md[EVP_MAX_MD_SIZE];
-};
-
 int main(int argc, char* argv[]) {
     using namespace std;
+    using namespace std::rel_ops;
     using namespace org::sqg;
 
-    bytes bb = bytes::from_hex("12345678");
-    cout << "bb = " << bb << endl;
+    bytes const key(string("30.90.10.126"));
+    bytes const data = bytes::from_hex("00330202004000000010B14204B0810C20431080E03020080A0216284096102184086210010D4A0858A1025840861021884000");
+    bytes expected = bytes::from_binary("0011110001101110000001101001011111011100000110000100001110011100");
+
+    bytes actual;
+
+    hmac mac(EVP_sha256(), key);
+    mac.update(data);
+    mac.finish(actual);
+    mac.reset(EVP_sha256(), key).update(data).finish(actual);
+
+    bytes r(actual.address(), 64 / 8);
+    if (r != expected)
+        throw std::runtime_error("not equal!");
+
+    cout << "expected " << expected << endl;
+    cout << "  actual " << r << endl;
 
     return EXIT_SUCCESS;
 }
