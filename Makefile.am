@@ -10,6 +10,7 @@ lib_LTLIBRARIES = libsha-demo.la
 libsha_demo_la_SOURCES = \
 ./src/bytes.cpp \
 ./src/envvars.cpp \
+./src/evp.cpp \
 ./src/hmac.cpp
 
 check_PROGRAMS = \

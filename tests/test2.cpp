@@ -15,6 +15,7 @@
 #include "../src/checksum.hpp"
 #include "../src/sha.hpp"
 #include "../src/hmac.hpp"
+#include "../src/evp.hpp"
 
 class engine_iterator;
 class engine {
@@ -112,6 +113,15 @@ int main(int argc, char* argv[]) {
     bytes expected = bytes::from_binary("0011110001101110000001101001011111011100000110000100001110011100");
 
     bytes actual;
+
+    evp evp(EVP_sha224());
+    evp.reset().update(data).finish(actual);
+    cout << "actual " << actual << endl;
+    evp.reset().update(data).finish(actual);
+    cout << "actual " << actual << endl;
+    sha224 s;
+    s.reset().update(data).finish(actual);
+    cout << "actual " << actual << endl;
 
     hmac mac(EVP_sha256(), key);
     mac.update(data);
