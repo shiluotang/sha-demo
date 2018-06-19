@@ -11,9 +11,15 @@ libsha_demo_la_SOURCES = \
 ./src/bytes.cpp \
 ./src/envvars.cpp
 
-check_PROGRAMS = test1
+check_PROGRAMS = \
+test1 \
+test2
 
 test1_SOURCES = ./tests/test1.cpp
 test1_LDADD = libsha-demo.la
+
+test2_SOURCES = ./tests/test2.cpp
+test2_LDADD = libsha-demo.la
+test2_LDFLAGS = -all-static
 
 TESTS = $(check_PROGRAMS)

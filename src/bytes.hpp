@@ -13,10 +13,12 @@ namespace org {
         class bytes {
             private:
                 typedef unsigned char byte;
-            private:
-                std::vector<byte> _M_data;
             public:
                 bytes();
+
+                //bytes(bytes const &other) {
+                //    assign(other);
+                //}
 
                 bytes(void const *data, size_t size);
 
@@ -70,6 +72,16 @@ namespace org {
                 void assign(bytes const &data) {
                     assign(data.address(), data.size());
                 }
+
+                static bytes from_hex(std::string const&);
+
+                static bytes from_binary(std::string const&);
+
+                bool operator == (bytes const&) const;
+
+                bool operator < (bytes const&) const;
+            private:
+                std::vector<byte> _M_data;
         };
 
         extern std::ostream& operator << (std::ostream&, bytes const&);
