@@ -173,7 +173,7 @@ int main(int argc, char* argv[]) {
     cout << "sizeof(sha384) = " << sizeof(sha384) << endl;
     cout << "sizeof(sha512) = " << sizeof(sha512) << endl;
 
-    engine_provider provider;
+    engine_enumerator provider;
     for (engine_iterator it = provider.begin(); it != provider.end(); ++it)
         cout << *it << endl;
     return EXIT_SUCCESS;
