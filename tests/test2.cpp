@@ -93,7 +93,34 @@ class engine_iterator: public std::iterator<std::forward_iterator_tag, engine> {
         pointer operator->() { return &_M_engine; }
 };
 
-class engine_provider {
+static struct openssl_environment {
+
+    openssl_environment() {
+        OpenSSL_add_all_algorithms();
+        OpenSSL_add_all_digests();
+        OpenSSL_add_all_ciphers();
+
+        ENGINE_load_builtin_engines();
+        ENGINE_load_cryptodev();
+        // ENGINE_load_openssl();
+        ENGINE_load_dynamic();
+        // ENGINE_load_rdrand();
+        ENGINE_register_all_digests();
+        ENGINE_register_all_ciphers();
+        ENGINE_register_all_complete();
+
+
+        std::cout << "initialization" << std::endl;
+    }
+
+    virtual ~openssl_environment() {
+        ENGINE_cleanup();
+        EVP_cleanup();
+        std::cout << "finalization" << std::endl;
+    }
+} env;
+
+class engine_enumerator {
     public:
         engine_iterator begin() {
             return engine_iterator(engine(ENGINE_get_first()));
@@ -108,6 +135,7 @@ int main(int argc, char* argv[]) {
     using namespace std;
     using namespace std::rel_ops;
     using namespace org::sqg;
+
 
     bytes const key(string("30.90.10.126"));
     bytes const data = bytes::from_hex("00330202004000000010B14204B0810C20431080E03020080A0216284096102184086210010D4A0858A1025840861021884000");
@@ -136,5 +164,17 @@ int main(int argc, char* argv[]) {
     cout << "expected " << expected << endl;
     cout << "  actual " << r << endl;
 
+    cout << "sizeof(evp) = " << sizeof(evp) << endl;
+    cout << "sizeof(hmac) = " << sizeof(hmac) << endl;
+    cout << "sizeof(sha) = " << sizeof(sha) << endl;
+    cout << "sizeof(sha1) = " << sizeof(sha1) << endl;
+    cout << "sizeof(sha224) = " << sizeof(sha224) << endl;
+    cout << "sizeof(sha256) = " << sizeof(sha256) << endl;
+    cout << "sizeof(sha384) = " << sizeof(sha384) << endl;
+    cout << "sizeof(sha512) = " << sizeof(sha512) << endl;
+
+    engine_provider provider;
+    for (engine_iterator it = provider.begin(); it != provider.end(); ++it)
+        cout << *it << endl;
     return EXIT_SUCCESS;
 }
