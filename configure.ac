@@ -19,7 +19,7 @@ AM_PROG_AR
 LT_INIT
 
 # Checks for libraries.
-PKG_CHECK_MODULES([SSL], [openssl libssl])
+PKG_CHECK_MODULES_STATIC([SSL], [openssl])
 
 # Checks for header files.
 
