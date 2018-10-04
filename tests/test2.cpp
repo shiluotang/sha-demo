@@ -22,13 +22,13 @@ class engine_iterator;
 class engine {
 
     private:
-        ENGINE *_M_engine;
+        ::ENGINE *_M_engine;
 
     private:
         friend class engine_iterator;
 
     public:
-        explicit engine(ENGINE *engine) :_M_engine(engine) {
+        explicit engine(::ENGINE *engine) :_M_engine(engine) {
         }
 
         engine(engine const &other) :_M_engine(other._M_engine) { }
@@ -36,11 +36,11 @@ class engine {
         virtual ~engine() { _M_engine = NULL; }
 
         std::string name() const {
-            return ENGINE_get_name(_M_engine);
+            return _M_engine ? ENGINE_get_name(_M_engine) : "<null>";
         }
 
         std::string id() const {
-            return ENGINE_get_id(_M_engine);
+            return _M_engine ? ENGINE_get_id(_M_engine) : "<null>";
         }
 
         bool operator == (engine const &other) const {
@@ -55,8 +55,6 @@ std::ostream& operator << (std::ostream &os, engine const &e) {
 }
 
 class engine_iterator: public std::iterator<std::forward_iterator_tag, engine> {
-    private:
-        engine _M_engine;
     public:
         explicit engine_iterator(engine e)
             :_M_engine(e) {
@@ -91,30 +89,30 @@ class engine_iterator: public std::iterator<std::forward_iterator_tag, engine> {
         reference operator*() { return _M_engine; }
 
         pointer operator->() { return &_M_engine; }
+    private:
+        engine _M_engine;
 };
 
 static struct openssl_environment {
 
     openssl_environment() {
         OpenSSL_add_all_algorithms();
-        OpenSSL_add_all_digests();
-        OpenSSL_add_all_ciphers();
+        // OpenSSL_add_all_digests();
+        // OpenSSL_add_all_ciphers();
 
-        ENGINE_load_builtin_engines();
-        ENGINE_load_cryptodev();
-        // ENGINE_load_openssl();
         ENGINE_load_dynamic();
-        // ENGINE_load_rdrand();
-        ENGINE_register_all_digests();
-        ENGINE_register_all_ciphers();
+        ENGINE_load_rdrand();
+        ENGINE_load_openssl();
+        ENGINE_load_builtin_engines();
         ENGINE_register_all_complete();
-
 
         std::cout << "initialization" << std::endl;
     }
 
     virtual ~openssl_environment() {
+#if defined(OPENSSL_API_COMPAT) && OPENSSL_API_COMPAT < 0x10100000L
         ENGINE_cleanup();
+#endif
         EVP_cleanup();
         std::cout << "finalization" << std::endl;
     }
@@ -127,7 +125,7 @@ class engine_enumerator {
         }
 
         engine_iterator end() {
-            return engine_iterator(engine(ENGINE_get_last()));
+            return engine_iterator(engine(NULL));
         }
 };
 
@@ -135,7 +133,6 @@ int main(int argc, char* argv[]) {
     using namespace std;
     using namespace std::rel_ops;
     using namespace org::sqg;
-
 
     bytes const key(string("30.90.10.126"));
     bytes const data = bytes::from_hex("00330202004000000010B14204B0810C20431080E03020080A0216284096102184086210010D4A0858A1025840861021884000");
@@ -155,7 +152,7 @@ int main(int argc, char* argv[]) {
     hmac mac(EVP_sha256(), key);
     mac.update(data);
     mac.finish(actual);
-    mac.reset(EVP_sha256(), key).update(data).finish(actual);
+    // mac.reset(EVP_sha256(), key).update(data).finish(actual);
 
     bytes r(actual.address(), 64 / 8);
     if (r != expected)
