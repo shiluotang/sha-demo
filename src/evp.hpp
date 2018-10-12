@@ -25,11 +25,15 @@ namespace org {
             };
 
         public:
-            evp(::EVP_MD const*, ::ENGINE * = NULL);
+            evp(std::string const&, ::ENGINE* = NULL);
+
+            evp(::EVP_MD const*, ::ENGINE* = NULL);
 
             virtual ~evp();
 
-            evp& reset(EVP_MD const*, ENGINE * = NULL);
+            evp& reset(std::string const&, ::ENGINE* = NULL);
+
+            evp& reset(EVP_MD const*, ::ENGINE* = NULL);
 
             evp& reset();
 

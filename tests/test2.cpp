@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstdio>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -25,7 +26,7 @@ static struct openssl_env_initial {
     openssl_env_initial() { static org::sqg::openssl_env initializer; }
 } initialization;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) try {
     using namespace std;
     using namespace std::rel_ops;
     using namespace org::sqg;
@@ -44,4 +45,10 @@ int main(int argc, char* argv[]) {
             it != engines.end(); ++it)
         cout << *it << endl;
     return EXIT_SUCCESS;
+} catch (std::exception const &e) {
+    std::cerr << "[C++ exception] " << e.what() << std::endl;
+    return EXIT_FAILURE;
+} catch (...) {
+    std::cerr << "[C++ exception] <UNKNOWN>" << std::endl;
+    return EXIT_FAILURE;
 }
