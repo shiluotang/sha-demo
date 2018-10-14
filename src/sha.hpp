@@ -1,5 +1,5 @@
-#ifndef SHA_HPP_INCLUDED
-#define SHA_HPP_INCLUDED
+#ifndef SHA_DEMO_SHA_HPP_INCLUDED
+#define SHA_DEMO_SHA_HPP_INCLUDED
 
 #include <cstddef>
 #include <stdexcept>
@@ -71,4 +71,4 @@ namespace org {
     }
 }
 
-#endif // SHA_HPP_INCLUDED
+#endif // SHA_DEMO_SHA_HPP_INCLUDED
