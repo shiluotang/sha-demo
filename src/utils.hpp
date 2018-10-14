@@ -12,12 +12,6 @@ namespace org {
             typedef std::basic_ios<CharT> xios;
             typedef CharT char_type;
 
-            xios &_M_stream;
-            typename xios::fmtflags  _M_flags;
-            typename xios::char_type _M_fillchar;
-            std::streamsize _M_width;
-            std::streamsize _M_precision;
-
             basic_ios_guard(xios &stream)
                 : _M_stream(stream)
                   , _M_flags(stream.flags())
@@ -33,6 +27,12 @@ namespace org {
                 _M_stream.width(_M_width);
                 _M_stream.precision(_M_precision);
             }
+
+            xios &_M_stream;
+            typename xios::fmtflags  _M_flags;
+            typename xios::char_type _M_fillchar;
+            std::streamsize _M_width;
+            std::streamsize _M_precision;
         };
 
         typedef basic_ios_guard<char> ios_guard;
