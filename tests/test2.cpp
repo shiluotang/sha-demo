@@ -14,6 +14,7 @@
 
 #include "../src/bytes.hpp"
 #include "../src/checksum.hpp"
+#include "../src/digester.hpp"
 #include "../src/engine.hpp"
 #include "../src/envvars.hpp"
 #include "../src/evp.hpp"
@@ -30,20 +31,26 @@ int main(int argc, char* argv[]) try {
     using namespace std;
     using namespace std::rel_ops;
     using namespace org::sqg;
-
-    cout << "sizeof(evp) = " << sizeof(evp) << endl;
-    cout << "sizeof(hmac) = " << sizeof(hmac) << endl;
-    cout << "sizeof(sha) = " << sizeof(sha) << endl;
-    cout << "sizeof(sha1) = " << sizeof(sha1) << endl;
-    cout << "sizeof(sha224) = " << sizeof(sha224) << endl;
-    cout << "sizeof(sha256) = " << sizeof(sha256) << endl;
-    cout << "sizeof(sha384) = " << sizeof(sha384) << endl;
-    cout << "sizeof(sha512) = " << sizeof(sha512) << endl;
+    using namespace org::sqg::envelope;
 
     std::vector<engine> const &engines = engine::engines();
     for (std::vector<engine>::const_iterator it = engines.begin();
             it != engines.end(); ++it)
         cout << *it << endl;
+
+    cout << digester::of("SHA") << endl;
+    cout << digester::of("SHA1") << endl;
+    cout << digester::of("SHA224") << endl;
+    cout << digester::of("SHA256") << endl;
+    cout << digester::of("SHA384") << endl;
+    cout << digester::of("SHA512") << endl;
+
+    cout << digester::of("MDC2") << endl;
+    cout << digester::of("MD4") << endl;
+    cout << digester::of("MD5") << endl;
+    cout << digester::of("DSA") << endl;
+    cout << digester::of("RIPEMD160") << endl;
+
     return EXIT_SUCCESS;
 } catch (std::exception const &e) {
     std::cerr << "[C++ exception] " << e.what() << std::endl;

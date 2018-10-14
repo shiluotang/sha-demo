@@ -19,13 +19,13 @@ namespace org {
 
             std::string id() const;
 
-            ::ENGINE* const native_engine() const;
+            ::ENGINE const* native_engine() const;
+
+            ::ENGINE* native_engine();
 
             bool operator == (engine const &other) const;
 
             static std::vector<engine> engines();
-
-            friend std::ostream &operator<<(std::ostream &, engine const &);
         private:
             ::ENGINE *_M_engine;
         };

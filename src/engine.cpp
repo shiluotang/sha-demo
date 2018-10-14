@@ -22,7 +22,9 @@ namespace org {
             return _M_engine ? ::ENGINE_get_id(_M_engine) : "<null>";
         }
 
-        ::ENGINE* const engine::native_engine() const { return _M_engine; }
+        ::ENGINE const* engine::native_engine() const { return _M_engine; }
+
+        ::ENGINE* engine::native_engine() { return _M_engine; }
 
         bool engine::operator == (engine const &other) const {
             return _M_engine == other._M_engine;
