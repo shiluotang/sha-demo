@@ -1,5 +1,5 @@
-#ifndef UTILS_HPP_INCLUDED
-#define UTILS_HPP_INCLUDED
+#ifndef SHA_DEMO_UTILS_HPP_INCLUDED
+#define SHA_DEMO_UTILS_HPP_INCLUDED
 
 #include <ios>
 
@@ -40,4 +40,4 @@ namespace org {
     }
 }
 
-#endif // UTILS_HPP_INCLUDED
+#endif // SHA_DEMO_UTILS_HPP_INCLUDED

@@ -1,5 +1,5 @@
-#ifndef BYTES_HPP_INCLUDED
-#define BYTES_HPP_INCLUDED
+#ifndef SHA_DEMO_BYTES_HPP_INCLUDED
+#define SHA_DEMO_BYTES_HPP_INCLUDED
 
 #include <vector>
 #include <iomanip>
@@ -90,4 +90,4 @@ namespace org {
     }
 }
 
-#endif // BYTES_HPP_INCLUDED
+#endif // SHA_DEMO_BYTES_HPP_INCLUDED

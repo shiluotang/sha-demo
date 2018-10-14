@@ -1,5 +1,5 @@
-#ifndef HMAC_HPP_INCLUDED
-#define HMAC_HPP_INCLUDED
+#ifndef SHA_DEMO_HMAC_HPP_INCLUDED
+#define SHA_DEMO_HMAC_HPP_INCLUDED
 
 #include <openssl/hmac.h>
 
@@ -12,8 +12,6 @@ namespace org {
         class hmac: public checksum {
             private:
                 struct context {
-                    HMAC_CTX _M_ctx;
-
                     context() { init(); }
 
                     virtual ~context() { cleanup(); }
@@ -25,14 +23,16 @@ namespace org {
                     void cleanup() {
                         ::HMAC_CTX_cleanup(&_M_ctx);
                     }
+
+                    ::HMAC_CTX _M_ctx;
                 };
 
             public:
-                hmac(EVP_MD const*, bytes const&, ENGINE* = NULL);
+                hmac(::EVP_MD const*, bytes const&, ::ENGINE* = NULL);
 
                 virtual ~hmac();
 
-                hmac& reset(EVP_MD const*, bytes const&, ENGINE* = NULL);
+                hmac& reset(::EVP_MD const*, bytes const&, ::ENGINE* = NULL);
 
                 hmac& reset();
 
@@ -43,10 +43,10 @@ namespace org {
                 hmac& finish(bytes &value);
 
             private:
-                context _M_ctx;
                 unsigned char _M_md[EVP_MAX_MD_SIZE];
+                context _M_ctx;
         };
     }
 }
 
-#endif // HMAC_HPP_INCLUDED
+#endif // SHA_DEMO_HMAC_HPP_INCLUDED

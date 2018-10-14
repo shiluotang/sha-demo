@@ -1,5 +1,5 @@
-#ifndef ENVVARS_HPP_INCLUDED
-#define ENVVARS_HPP_INCLUDED
+#ifndef SHA_DEMO_ENVVARS_HPP_INCLUDED
+#define SHA_DEMO_ENVVARS_HPP_INCLUDED
 
 #include <cstdlib>
 #include <string>
@@ -13,4 +13,4 @@ namespace org {
     }
 }
 
-#endif // ENVVARS_HPP_INCLUDED
+#endif // SHA_DEMO_ENVVARS_HPP_INCLUDED

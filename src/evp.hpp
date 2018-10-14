@@ -1,5 +1,5 @@
-#ifndef EVP_HPP_INCLUDED
-#define EVP_HPP_INCLUDED
+#ifndef SHA_DEMO_EVP_HPP_INCLUDED
+#define SHA_DEMO_EVP_HPP_INCLUDED
 
 #include <openssl/evp.h>
 
@@ -12,8 +12,6 @@ namespace org {
         class evp: public checksum {
         private:
             struct context {
-                ::EVP_MD_CTX _M_ctx;
-
                 context() {
                     ::EVP_MD_CTX_init(&_M_ctx);
                 }
@@ -22,6 +20,8 @@ namespace org {
                     // FIXME detect failure?
                     ::EVP_MD_CTX_cleanup(&_M_ctx);
                 }
+
+                ::EVP_MD_CTX _M_ctx;
             };
 
         public:
@@ -33,7 +33,7 @@ namespace org {
 
             evp& reset(std::string const&, ::ENGINE* = NULL);
 
-            evp& reset(EVP_MD const*, ::ENGINE* = NULL);
+            evp& reset(::EVP_MD const*, ::ENGINE* = NULL);
 
             evp& reset();
 
@@ -53,4 +53,4 @@ namespace org {
     }
 }
 
-#endif // EVP_HPP_INCLUDED
+#endif // SHA_DEMO_EVP_HPP_INCLUDED

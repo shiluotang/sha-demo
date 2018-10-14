@@ -1,5 +1,5 @@
-#ifndef CHECKSUM_HPP_INCLUDED
-#define CHECKSUM_HPP_INCLUDED
+#ifndef SHA_DEMO_CHECKSUM_HPP_INCLUDED
+#define SHA_DEMO_CHECKSUM_HPP_INCLUDED
 
 namespace org {
     namespace sqg {
@@ -17,4 +17,4 @@ namespace org {
     }
 }
 
-#endif // CHECKSUM_HPP_INCLUDED
+#endif // SHA_DEMO_CHECKSUM_HPP_INCLUDED
