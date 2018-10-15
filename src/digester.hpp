@@ -27,7 +27,7 @@ namespace org {
 
                     int type() const;
 
-                    digester digester() const;
+                    ::org::sqg::envelope::digester digester() const;
 
                     ::EVP_MD_CTX *_M_ctx;
                 };
