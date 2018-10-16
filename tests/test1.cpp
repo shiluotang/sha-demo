@@ -12,7 +12,7 @@
 #include "../src/sha.hpp"
 #include "../src/envvars.hpp"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) try {
     using namespace std;
     using namespace org::sqg;
 
@@ -55,4 +55,10 @@ int main(int argc, char* argv[]) {
     checksumers.clear();
 
     return EXIT_SUCCESS;
+} catch (std::exception const &e) {
+    std::cerr << "[C++ exception] " << e.what() << std::endl;
+    return EXIT_FAILURE;
+} catch (...) {
+    std::cerr << "[C++ exception] <UNKNOWN>" << std::endl;
+    return EXIT_FAILURE;
 }

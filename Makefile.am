@@ -14,7 +14,8 @@ libsha_demo_la_SOURCES = \
 ./src/envvars.cpp \
 ./src/evp.cpp \
 ./src/hmac.cpp \
-./src/openssl_env.cpp
+./src/openssl_env.cpp \
+./src/signer.cpp
 
 check_PROGRAMS = \
 test1 \
