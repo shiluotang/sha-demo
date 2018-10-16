@@ -4,6 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include <iosfwd>
+#include <string>
 
 #include "utils.hpp"
 
@@ -16,27 +17,13 @@ namespace org {
             public:
                 bytes();
 
-                //bytes(bytes const &other) {
-                //    assign(other);
-                //}
-
                 bytes(void const *data, size_t size);
 
-                template <typename T, size_t N>
-                explicit bytes(T (&a)[N]) :_M_data(sizeof(T) * N) {
-                    std::copy(
-                            reinterpret_cast<byte const*>(&a[0]),
-                            reinterpret_cast<byte const*>(&a[0]) + sizeof(a[0]) * N,
-                            _M_data.begin());
-                }
-
                 template <typename CharT>
-                explicit bytes(std::basic_string<CharT> const &s)
-                    :_M_data(sizeof(CharT) * s.length()) {
-                    std::copy(
-                            reinterpret_cast<byte const*>(&s[0]),
-                            reinterpret_cast<byte const*>(&s[0]) + sizeof(CharT) * s.length(),
-                            _M_data.begin());
+                bytes(CharT const* s)
+                    :_M_data(reinterpret_cast<byte const*>(s),
+                            reinterpret_cast<byte const*>(s + std::char_traits<CharT>::length(s)))
+                {
                 }
 
                 template <typename CharT>
